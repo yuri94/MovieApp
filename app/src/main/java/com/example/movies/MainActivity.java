@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         movieListViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
 
+        //test comment
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
