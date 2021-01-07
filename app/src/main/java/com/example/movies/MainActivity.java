@@ -1,6 +1,7 @@
 package com.example.movies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -25,6 +26,11 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
+
+
+
     Button btn;
 
     private MovieListViewModel movieListViewModel;
@@ -37,12 +43,22 @@ public class MainActivity extends AppCompatActivity {
 
         movieListViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
 
+        ObserveAnyChange();
+
+
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 GetRetrofitResponceAccordingToID();
+                searchMovieApi("fast", 1);
             }
         });
+    }
+
+
+    private void searchMovieApi(String query, int pageNumber){
+        movieListViewModel.searchMovieApi(query, pageNumber);
     }
 
 
@@ -89,6 +105,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void ObserveAnyChange(){
+        movieListViewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(List<MovieModel> movieModels) {
+                if (movieModels != null){
+                    for(MovieModel movieModel : movieModels){
+                        Log.v("Tag", "onChanged: "  + movieModel.getTitle());
+                    }
+                }
+            }
+        });
+    }
 
     private void   GetRetrofitResponceAccordingToID(){
 
