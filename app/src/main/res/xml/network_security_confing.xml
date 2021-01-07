@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<newtwork-security-confing>
-    <base-confing cleartextTrafficPermitted= "true"/>
-
-    <domain-confing clearTextTrafficPermitted = "true">
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">api.themoviedb.org</domain>
-    </domain-confing>
-
-</newtwork-security-confing>
+    </domain-config>
+</network-security-config>

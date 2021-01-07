@@ -67,7 +67,7 @@ public class MovieApiClient {
                 myHandler.cancel(true);
 
             }
-        }, 300, TimeUnit.MILLISECONDS);
+        }, 3000, TimeUnit.MILLISECONDS);
     }
 
 

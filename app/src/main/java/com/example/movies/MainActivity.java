@@ -27,10 +27,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
 
-
-
-
-
     Button btn;
 
     private MovieListViewModel movieListViewModel;
@@ -45,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         ObserveAnyChange();
 
-
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,15 +51,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void searchMovieApi(String query, int pageNumber){
+    private void searchMovieApi(String query, int pageNumber) {
         movieListViewModel.searchMovieApi(query, pageNumber);
     }
 
 
-
-
-
-    private  void  GetRetrofitResponse() {
+    private void GetRetrofitResponse() {
         MovieApi movieApi = Survicey.getMovieApi();
         Call<MovieSearchResponse> responseCall;
         responseCall = movieApi
@@ -76,21 +67,19 @@ public class MainActivity extends AppCompatActivity {
         responseCall.enqueue(new Callback<MovieSearchResponse>() {
             @Override
             public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
 
                     //Log.v("Tag" , "the response" + response.body().toString());
 
                     List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
 
-                    for(MovieModel movie: movies){
-                        Log.v("Tag" , "Name"+ movie.getTitle());
+                    for (MovieModel movie : movies) {
+                        Log.v("Tag", "Name" + movie.getTitle());
                     }
 
-                }
-                else
-                {
+                } else {
                     try {
-                        Log.v("Tag" , "Error" + response.errorBody().string());
+                        Log.v("Tag", "Error" + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -105,20 +94,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void ObserveAnyChange(){
+    private void ObserveAnyChange() {
         movieListViewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
-                if (movieModels != null){
-                    for(MovieModel movieModel : movieModels){
-                        Log.v("Tag", "onChanged: "  + movieModel.getTitle());
+                if (movieModels != null) {
+                    for (MovieModel movieModel : movieModels) {
+                        Log.v("Tag", "onChanged: " + movieModel.getTitle());
                     }
                 }
             }
         });
     }
 
-    private void   GetRetrofitResponceAccordingToID(){
+    private void GetRetrofitResponceAccordingToID() {
 
         MovieApi movieApi = Survicey.getMovieApi();
         Call<MovieModel> responceCall = movieApi
@@ -130,16 +119,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
 
-                if(response.code() == 200) {
+                if (response.code() == 200) {
                     MovieModel movie = response.body();
-                    Log.v("Tag" , "The Response" + movie.getTitle());
-                }
-                else {
+                    Log.v("Tag", "The Response" + movie.getTitle());
+                } else {
                     try {
                         Log.v("Tag", "Error" + response.errorBody().string());
 
                     } catch (IOException e) {
-                            e.printStackTrace();
+                        e.printStackTrace();
                     }
                 }
 
