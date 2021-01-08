@@ -44,55 +44,17 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GetRetrofitResponceAccordingToID();
-                searchMovieApi("fast", 1);
+
+                searchMovieApi("Fast", 1);
             }
         });
     }
 
 
-    private void searchMovieApi(String query, int pageNumber) {
-        movieListViewModel.searchMovieApi(query, pageNumber);
-    }
 
 
-    private void GetRetrofitResponse() {
-        MovieApi movieApi = Survicey.getMovieApi();
-        Call<MovieSearchResponse> responseCall;
-        responseCall = movieApi
-                .searchMovie(
-                        Credentials.API_KEY,
-                        "Jack Reacher",
-                        1);
-        responseCall.enqueue(new Callback<MovieSearchResponse>() {
-            @Override
-            public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                if (response.code() == 200) {
 
-                    //Log.v("Tag" , "the response" + response.body().toString());
 
-                    List<MovieModel> movies = new ArrayList<>(response.body().getMovies());
-
-                    for (MovieModel movie : movies) {
-                        Log.v("Tag", "Name" + movie.getTitle());
-                    }
-
-                } else {
-                    try {
-                        Log.v("Tag", "Error" + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
-
-            }
-        });
-    }
 
     private void ObserveAnyChange() {
         movieListViewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
@@ -107,38 +69,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void GetRetrofitResponceAccordingToID() {
-
-        MovieApi movieApi = Survicey.getMovieApi();
-        Call<MovieModel> responceCall = movieApi
-                .getMovie(
-                        343611,
-                        Credentials.API_KEY);
-
-        responceCall.enqueue(new Callback<MovieModel>() {
-            @Override
-            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-
-                if (response.code() == 200) {
-                    MovieModel movie = response.body();
-                    Log.v("Tag", "The Response" + movie.getTitle());
-                } else {
-                    try {
-                        Log.v("Tag", "Error" + response.errorBody().string());
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<MovieModel> call, Throwable t) {
-
-            }
-        });
-
+    private void searchMovieApi(String query, int pageNumber) {
+        movieListViewModel.searchMovieApi(query, pageNumber);
     }
 
 }
