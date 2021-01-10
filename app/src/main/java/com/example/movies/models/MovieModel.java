@@ -3,19 +3,21 @@ package com.example.movies.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class MovieModel implements Parcelable {
 // Model Class for our movies
     private String title;
     private String poster_path;
     private String release_date;
+
+    @SerializedName("id")
     private int movie_id;
     private float vote_averege;
     private String movie_overview;
 
 
     //Constructor
-
-
     public MovieModel(String title, String poster_path, String release_date, int movie_id, float vote_averege, String movie_overview) {
         this.title = title;
         this.poster_path = poster_path;
@@ -25,9 +27,7 @@ public class MovieModel implements Parcelable {
         this.movie_overview = movie_overview;
     }
 
-
     //Getters
-
     protected MovieModel(Parcel in) {
         title = in.readString();
         poster_path = in.readString();
@@ -77,10 +77,6 @@ public class MovieModel implements Parcelable {
     public int describeContents() {
             return  0;
     }
-
-
-
-
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {

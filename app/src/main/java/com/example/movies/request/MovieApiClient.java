@@ -10,7 +10,6 @@ import com.example.movies.AppExecutors;
 import com.example.movies.models.MovieModel;
 import com.example.movies.response.MovieSearchResponse;
 import com.example.movies.untils.Credentials;
-import com.example.movies.untils.MovieApi;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,44 +21,38 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class MovieApiClient {
-    private MutableLiveData<List<MovieModel>> mMovies ;
+    private MutableLiveData<List<MovieModel>> mMovies;
 
     private static MovieApiClient instance;
 
     private RetrieveMoviesRunnable retrieveMoviesRunnable;
 
-    public static MovieApiClient getInstance(){
-
-
-        if (instance ==null){
+    public static MovieApiClient getInstance() {
+        if (instance == null) {
             instance = new MovieApiClient();
         }
         return instance;
     }
 
-    private MovieApiClient(){
+    private MovieApiClient() {
         mMovies = new MutableLiveData<>();
     }
 
 
-
-    public LiveData<List<MovieModel>> getMovies(){
+    public LiveData<List<MovieModel>> getMovies() {
         return mMovies;
     }
 
 
+    public void searchMovieApi(String query, int pageNumber) {
 
-    public void searchMovieApi(String query, int pageNumber){
-
-        if (retrieveMoviesRunnable != null){
+        if (retrieveMoviesRunnable != null) {
             retrieveMoviesRunnable = null;
         }
 
         retrieveMoviesRunnable = new RetrieveMoviesRunnable(query, pageNumber);
 
         final Future myHandler = AppExecutors.getInstance().networkIO().submit(retrieveMoviesRunnable);
-
-
         AppExecutors.getInstance().networkIO().schedule(new Runnable() {
             @Override
             public void run() {
@@ -67,17 +60,15 @@ public class MovieApiClient {
                 myHandler.cancel(true);
 
             }
-        }, 3000, TimeUnit.MILLISECONDS);
+        }, 5000, TimeUnit.MILLISECONDS);
     }
 
+    private class RetrieveMoviesRunnable implements Runnable {
 
-
-
-    private class RetrieveMoviesRunnable implements Runnable{
-
-        private  String query;
+        private String query;
         private int pageNumber;
         boolean cancelRequest;
+        private int id;
 
         public RetrieveMoviesRunnable(String query, int pageNumber) {
             this.query = query;
@@ -85,35 +76,37 @@ public class MovieApiClient {
             cancelRequest = false;
         }
 
-        @Override
-        public void run() {
-        try {
-            Response response = getMovies(query, pageNumber).execute();
-            if (cancelRequest){
-                return;
-            }
-            if (response.code() == 200){
-                List<MovieModel> list = new ArrayList<>(((MovieSearchResponse)response.body()).getMovies());
-                if (pageNumber == 1){
-                    mMovies.postValue(list);
-                }else {
-                    List<MovieModel> currentMovies = mMovies.getValue();
-                    currentMovies.addAll(list);
-                    mMovies.postValue(currentMovies);
-                }
-            }else {
-                String error = response.errorBody().string();
-                Log.v("Tag", "Error " + error);
-                mMovies.postValue(null);
-
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            mMovies.postValue(null);
+        public RetrieveMoviesRunnable(int id) {
+            this.id = id;
         }
 
+        @Override
+        public void run() {
+            try {
+                Response response = getMovies(query, pageNumber).execute();
+                if (cancelRequest) {
+                    return;
+                }
+                if (response.code() == 200) {
+                    List<MovieModel> list = new ArrayList<>(((MovieSearchResponse) response.body()).getMovies());
+                    if (pageNumber == 1) {
+                        mMovies.postValue(list);
+                    } else {
+                        List<MovieModel> currentMovies = mMovies.getValue();
+                        currentMovies.addAll(list);
+                        mMovies.postValue(currentMovies);
+                    }
+                } else {
+                    String error = response.errorBody().string();
+                    Log.v("Tag", "Error " + error);
+                    mMovies.postValue(null);
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.v("Tag", "Error " + e.getMessage());
+                mMovies.postValue(null);
+            }
 
             if (cancelRequest) {
                 return;
@@ -121,14 +114,20 @@ public class MovieApiClient {
 
 
         }
-        private Call<MovieSearchResponse> getMovies (String query, int pageNumber){
+
+        private Call<MovieSearchResponse> getMovies(String query, int pageNumber) {
             return Survicey.getMovieApi().searchMovie(
                     Credentials.API_KEY,
                     query,
                     pageNumber
             );
         }
-        private void CancelRequest(){
+
+        private Call<MovieModel> findMovieById(int id) {
+            return Survicey.getMovieApi().getMovie(id, Credentials.API_KEY);
+        }
+
+        private void CancelRequest() {
             Log.v("Tag", "Cancelling Search Request");
             cancelRequest = true;
         }

@@ -1,12 +1,9 @@
 package com.example.movies.repositories;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.movies.models.MovieModel;
 import com.example.movies.request.MovieApiClient;
-import com.example.movies.untils.MovieApi;
-import com.example.movies.viewmodels.MovieListViewModel;
 
 import java.util.List;
 
@@ -32,10 +29,8 @@ public class MovieRepository {
     }
 
 
-
-
-public void serachMovieApi(String query, int pageNumber) {
-    movieApiClient.searchMovieApi(query, pageNumber);
+    public void serachMovieApi(String query, int pageNumber) {
+        movieApiClient.searchMovieApi(query, pageNumber);
     }
 }
 

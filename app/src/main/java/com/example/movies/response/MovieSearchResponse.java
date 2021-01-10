@@ -7,12 +7,12 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class MovieSearchResponse {
-    @SerializedName("total_result")
-    @Expose
+    @SerializedName("total_results")
+    @Expose()
     private int total_count;
 
-    @SerializedName("result")
-    @Expose
+    @SerializedName("results")
+    @Expose()
     private List<MovieModel> movies;
 
     public int getTotal_count(){
