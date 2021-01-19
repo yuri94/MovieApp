@@ -2,8 +2,6 @@ package com.example.movies;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -36,11 +34,8 @@ public class MainActivity extends AppCompatActivity implements OnMovieLiestener 
         movieListViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
 
         ConfigureRecyclerView();
-        ObserveAnyChange();
         searchMovieApi("fast", 1);
-
-
-
+        ObserveAnyChange();
     }
 
     private void ObserveAnyChange() {
@@ -52,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements OnMovieLiestener 
                         Log.v("Tag", "onChanged: " + movieModel.getTitle());
 
                         movieRecyclerAdapter.setmMovies(movieModels);
+                        movieRecyclerAdapter.notifyDataSetChanged();
                     }
                 }
             }
