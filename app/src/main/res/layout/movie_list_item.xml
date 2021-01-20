@@ -1,88 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
-
-
-
-  <androidx.cardview.widget.CardView
-        android:layout_width="268dp"
-        android:layout_height="317dp"
+    <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
-        app.cardEvelation= "10dp">
+        android:layout_width="268dp"
+        android:layout_height="317dp">
 
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-    <ImageView
-        android:id="@+id/movie_img"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-      android:padding="10dp">
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-      android:textColor="#000000"
-      android:id="@+id/movie_title"/>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      android:weightSum="100">
-
-
-        <TextView
-            android:id="@+id/movie_category"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="90"
-            android:gravity="start"
-            android:textSize="14sp" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="10"
-      android:textSize="14sp"
-      android:id="@+id/movie_duration"
-      android:layout_gravity="center"></TextView>
-
-
-
-
-</LinearLayout>
-    </LinearLayout>
-
-        <RatingBar
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rating_bar"
-            android:layout_margin="10dp"
-            android:numStars="5"/>
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/movie_img"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
 
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/movie_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="100">
+
+
+                    <TextView
+                        android:id="@+id/movie_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="90"
+                        android:gravity="start"
+                        android:textSize="14sp" />
+
+
+                    <TextView
+                        android:id="@+id/movie_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="10"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <RatingBar
+                android:id="@+id/rating_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:numStars="5" />
+
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>
 

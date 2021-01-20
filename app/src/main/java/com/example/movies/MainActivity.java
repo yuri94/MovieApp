@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements OnMovieLiestener 
 
     private void ConfigureRecyclerView(){
         movieRecyclerAdapter = new MovieRecyclerView( this);
-
-        recyclerView.setAdapter(movieRecyclerAdapter);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(movieRecyclerAdapter);
     }
 
     @Override

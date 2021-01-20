@@ -12,23 +12,23 @@ import com.example.movies.R;
 
 public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    TextView title, release_date, duration;
+    TextView title, release_date, duration, movie_category;
     ImageView imageView;
     RatingBar ratingBar;
 
     OnMovieLiestener onMovieLiestener;
 
 
-    public MovieViewHolder(@NonNull View itemView,  View.OnClickListener onClickListener) {
+    public MovieViewHolder(@NonNull View itemView) {
         super(itemView);
         title = itemView.findViewById(R.id.movie_title);
-        release_date = itemView.findViewById(R.id.movie_category);
+        //movie_category = itemView.findViewById(R.id.movie_category);
         duration = itemView.findViewById(R.id.movie_duration);
 
         imageView = itemView.findViewById(R.id.movie_img);
-        ratingBar = itemView.findViewById(R.id.rating_bar);
+        //ratingBar = itemView.findViewById(R.id.rating_bar);
 
-        itemView.setOnClickListener(this);
+        //itemView.setOnClickListener(this);
 
     }
 
