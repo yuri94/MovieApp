@@ -2,6 +2,7 @@ package com.example.movies;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements OnMovieLiestener 
             public void onChanged(List<MovieModel> movieModels) {
                 if (movieModels != null) {
                     for (MovieModel movieModel : movieModels) {
-                        Log.v("Tag", "onChanged: " + movieModel.getTitle());
+                   //     Log.v("Tag", "onChanged: " + movieModel.getTitle());
 
                         movieRecyclerAdapter.setmMovies(movieModels);
                         movieRecyclerAdapter.notifyDataSetChanged();
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements OnMovieLiestener 
 
     @Override
     public void onMovieClick(int position) {
-
+        Toast.makeText(this, "The position" + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override

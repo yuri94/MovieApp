@@ -19,16 +19,20 @@ public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnC
     OnMovieLiestener onMovieLiestener;
 
 
-    public MovieViewHolder(@NonNull View itemView) {
+    public MovieViewHolder(@NonNull View itemView, OnMovieLiestener onMovieLiestener) {
         super(itemView);
+
+        this.onMovieLiestener = onMovieLiestener;
+
         title = itemView.findViewById(R.id.movie_title);
+        release_date = itemView.findViewById((R.id.movie_category));
         //movie_category = itemView.findViewById(R.id.movie_category);
         duration = itemView.findViewById(R.id.movie_duration);
 
         imageView = itemView.findViewById(R.id.movie_img);
-        //ratingBar = itemView.findViewById(R.id.rating_bar);
+        ratingBar = itemView.findViewById(R.id.rating_bar);
 
-        //itemView.setOnClickListener(this);
+        itemView.setOnClickListener(this);
 
     }
 
