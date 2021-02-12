@@ -6,7 +6,7 @@ import com.example.movies.untils.MovieApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Survicey {
+public class RetrofitService {
 
     private  static final Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
             .baseUrl(Credentials.BASE_URL)

@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.movies.R;
-import com.example.movies.models.MovieModel;
+import com.example.movies.models.Movie;
 
 import java.util.List;
 
 public class MovieRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<MovieModel> mMovies;
+    private List<Movie> mMovies;
     private OnMovieLiestener onMovieLiestener;
 
     public MovieRecyclerView(OnMovieLiestener onMovieLiestener) {
@@ -45,11 +45,12 @@ public class MovieRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         //((MovieViewHolder) holder).ratingBar.setRating((mMovies.get(i).getVote_averege()) / 2);
 
+        Movie movie = mMovies.get(i);
+
         Glide.with(holder.itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w500" + mMovies.get(i).getPoster_path())
+                .load("https://image.tmdb.org/t/p/w500" + mMovies.get(i).getPosterPath())
                 .into((((MovieViewHolder) holder).imageView));
     }
-
 
     @Override
     public int getItemCount() {
@@ -59,7 +60,7 @@ public class MovieRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHol
         return 0;
     }
 
-    public void setmMovies(List<MovieModel> mMovies) {
+    public void setmMovies(List<Movie> mMovies) {
         this.mMovies = mMovies;
     }
 }

@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movies.AppExecutors;
-import com.example.movies.models.MovieModel;
-import com.example.movies.response.MovieSearchResponse;
+import com.example.movies.models.Movie;
+import com.example.movies.models.SearchMovie;
 import com.example.movies.untils.Credentials;
 
 import java.io.IOException;
@@ -21,7 +21,9 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class MovieApiClient {
-    private MutableLiveData<List<MovieModel>> mMovies;
+
+    private MutableLiveData<List<Movie>> mMovies;
+    private MutableLiveData<Movie> mMovie;
 
     private static MovieApiClient instance;
 
@@ -36,13 +38,17 @@ public class MovieApiClient {
 
     private MovieApiClient() {
         mMovies = new MutableLiveData<>();
+        mMovie = new MutableLiveData<>();
     }
 
 
-    public LiveData<List<MovieModel>> getMovies() {
+    public LiveData<List<Movie>> getMovies() {
         return mMovies;
     }
 
+    public LiveData<Movie> getMovie() {
+        return mMovie;
+    }
 
     public void searchMovieApi(String query, int pageNumber) {
 
@@ -63,6 +69,23 @@ public class MovieApiClient {
         }, 5000, TimeUnit.MILLISECONDS);
     }
 
+    public void findMovieById(int id) {
+        if (retrieveMoviesRunnable != null) {
+            retrieveMoviesRunnable = null;
+        }
+
+        retrieveMoviesRunnable = new RetrieveMoviesRunnable(id);
+
+        final Future myHandler = AppExecutors.getInstance().networkIO().submit(retrieveMoviesRunnable);
+
+        AppExecutors.getInstance().networkIO().schedule(new Runnable() {
+            @Override
+            public void run() {
+                myHandler.cancel(true);
+            }
+        }, 5000, TimeUnit.MILLISECONDS);
+    }
+
     private class RetrieveMoviesRunnable implements Runnable {
 
         private String query;
@@ -78,53 +101,76 @@ public class MovieApiClient {
 
         public RetrieveMoviesRunnable(int id) {
             this.id = id;
+            cancelRequest = false;
         }
 
         @Override
         public void run() {
             try {
-                Response response = getMovies(query, pageNumber).execute();
+                Response response;
+
+                if (id != 0) {
+                    response = findMovieById(id).execute();
+                    if (response.code() == 200) {
+                        fetchMovieResponse(response);
+                    } else {
+                        String error = response.errorBody().string();
+                        Log.v("Tag", "Error " + error);
+                        mMovie.postValue(null);
+                    }
+                } else {
+                    response = getMovies(query, pageNumber).execute();
+                    if (response.code() == 200) {
+                        fetchMovieSearchResponse(response);
+                    } else {
+                        String error = response.errorBody().string();
+                        Log.v("Tag", "Error " + error);
+                        mMovies.postValue(null);
+                    }
+                }
+
                 if (cancelRequest) {
                     return;
                 }
-                if (response.code() == 200) {
-                    List<MovieModel> list = new ArrayList<>(((MovieSearchResponse) response.body()).getMovies());
-                    if (pageNumber == 1) {
-                        mMovies.postValue(list);
-                    } else {
-                        List<MovieModel> currentMovies = mMovies.getValue();
-                        currentMovies.addAll(list);
-                        mMovies.postValue(currentMovies);
-                    }
-                } else {
-                    String error = response.errorBody().string();
-                    Log.v("Tag", "Error " + error);
-                    mMovies.postValue(null);
 
-                }
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.v("Tag", "Error " + e.getMessage());
-                mMovies.postValue(null);
+                mMovie = null;
+                mMovies = null;
             }
 
             if (cancelRequest) {
                 return;
             }
-
-
         }
 
-        private Call<MovieSearchResponse> getMovies(String query, int pageNumber) {
-            return Survicey.getMovieApi().searchMovie(
+        private void fetchMovieSearchResponse(Response response) {
+            List<Movie> list = new ArrayList<>(((SearchMovie) response.body()).getResults());
+            if (pageNumber == 1) {
+                mMovies.postValue(list);
+            } else {
+                List<Movie> currentMovies = mMovies.getValue();
+                currentMovies.addAll(list);
+                mMovies.postValue(currentMovies);
+            }
+        }
+
+        private void fetchMovieResponse(Response response) {
+            Movie movie = ((Movie) response.body());
+            mMovie.postValue(movie);
+        }
+
+        private Call<SearchMovie> getMovies(String query, int pageNumber) {
+            return RetrofitService.getMovieApi().searchMovie(
                     Credentials.API_KEY,
                     query,
                     pageNumber
             );
         }
 
-        private Call<MovieModel> findMovieById(int id) {
-            return Survicey.getMovieApi().getMovie(id, Credentials.API_KEY);
+        private Call<Movie> findMovieById(int id) {
+            return RetrofitService.getMovieApi().getMovie(id, Credentials.API_KEY);
         }
 
         private void CancelRequest() {

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movies.adapters.MovieRecyclerView;
 import com.example.movies.adapters.OnMovieLiestener;
-import com.example.movies.models.MovieModel;
+import com.example.movies.models.Movie;
 import com.example.movies.viewmodels.MovieListViewModel;
 
 import java.util.List;
@@ -35,18 +35,28 @@ public class MainActivity extends AppCompatActivity implements OnMovieLiestener 
 
         ConfigureRecyclerView();
         searchMovieApi("fast", 1);
+        //findMovieByIdApi(200);
         ObserveAnyChange();
     }
 
     private void ObserveAnyChange() {
-        movieListViewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
+        movieListViewModel.getMovie().observe(this, new Observer<Movie>() {
             @Override
-            public void onChanged(List<MovieModel> movieModels) {
-                if (movieModels != null) {
-                    for (MovieModel movieModel : movieModels) {
-                        Log.v("Tag", "onChanged: " + movieModel.getTitle());
+            public void onChanged(Movie movie) {
+                if (movie != null) {
+                    Log.v("Movie: ", "Info: " + movie.toString());
+                }
+            }
+        });
 
-                        movieRecyclerAdapter.setmMovies(movieModels);
+        movieListViewModel.getMovies().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> movies) {
+                if (movies != null) {
+                    for (Movie movie : movies) {
+                        Log.v("Tag", "onChanged: " + movie.getTitle());
+
+                        movieRecyclerAdapter.setmMovies(movies);
                         movieRecyclerAdapter.notifyDataSetChanged();
                     }
                 }
@@ -56,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements OnMovieLiestener 
 
     private void searchMovieApi(String query, int pageNumber) {
         movieListViewModel.searchMovieApi(query, pageNumber);
+    }
+
+    private void findMovieByIdApi(int id) {
+        movieListViewModel.findMovieByIdApi(id);
     }
 
     private void ConfigureRecyclerView(){

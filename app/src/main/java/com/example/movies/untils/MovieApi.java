@@ -1,7 +1,7 @@
 package com.example.movies.untils;
 
-import com.example.movies.models.MovieModel;
-import com.example.movies.response.MovieSearchResponse;
+import com.example.movies.models.Movie;
+import com.example.movies.models.SearchMovie;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -11,14 +11,14 @@ import retrofit2.http.Query;
 public interface MovieApi {
 
     @GET("/3/search/movie")
-    Call<MovieSearchResponse> searchMovie(
+    Call<SearchMovie> searchMovie(
             @Query("api_key") String key,
             @Query("query") String query,
             @Query("page") int page
     );
 
     @GET("/3/movie/{movie_id}?")
-    Call<MovieModel> getMovie(
+    Call<Movie> getMovie(
             @Path("movie_id") int movie_id,
             @Query("api_key") String api_key
     );
