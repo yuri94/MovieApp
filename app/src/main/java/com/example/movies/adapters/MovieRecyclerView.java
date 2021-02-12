@@ -29,7 +29,7 @@ public class MovieRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHol
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_list_item,
                 parent, false);
 
-        return new MovieViewHolder(view);
+        return new MovieViewHolder(view, onMovieLiestener);
     }
 
     @Override
@@ -41,7 +41,10 @@ public class MovieRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         ((MovieViewHolder) holder).title.setText(mMovies.get(i).getTitle());
         //((MovieViewHolder) holder).movie_category.setText(mMovies.get(i).getRelease_date());
-        ((MovieViewHolder) holder).duration.setText(String.valueOf(mMovies.get(i).getRuntime()));
+
+
+
+        ((MovieViewHolder) holder).duration.setText(String.valueOf(mMovies.get(i).getOriginal_lenguage()));
 
         //((MovieViewHolder) holder).ratingBar.setRating((mMovies.get(i).getVote_averege()) / 2);
 
