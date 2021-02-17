@@ -9,8 +9,10 @@ import java.util.List;
 
 public class MovieRepository {
     private static MovieRepository instance;
-
     private MovieApiClient movieApiClient;
+
+    String query;
+    int pageNumber;
 
     public static MovieRepository getInstance() {
         if (instance == null) {
@@ -33,7 +35,13 @@ public class MovieRepository {
     }
 
     public void serachMovieApi(String query, int pageNumber) {
+        this.query = query;
+        this.pageNumber = pageNumber;
         movieApiClient.searchMovieApi(query, pageNumber);
+    }
+
+    public void searchNextPage() {
+        serachMovieApi(query, pageNumber + 1);
     }
 
     public void findMovieByIdApi(int id) {

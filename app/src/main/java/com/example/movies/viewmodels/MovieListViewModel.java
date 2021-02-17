@@ -28,6 +28,10 @@ public class MovieListViewModel extends ViewModel {
         movieRepository.serachMovieApi(query, pageNumber);
     }
 
+    public void searchNextPage() {
+        movieRepository.searchNextPage();
+    }
+
     public void findMovieByIdApi(int id) {
         movieRepository.findMovieByIdApi(id);
     }

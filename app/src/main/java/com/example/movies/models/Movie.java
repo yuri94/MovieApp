@@ -87,7 +87,7 @@ public class Movie implements Parcelable {
     private String originalTitle;
 
     private String overview;
-    private double popularity;
+    private float popularity;
 
     @SerializedName("poster_path")
     private String posterPath;
@@ -113,7 +113,7 @@ public class Movie implements Parcelable {
     private boolean video;
 
     @SerializedName("vote_average")
-    private double voteAverege;
+    private float voteAverege;
 
     @SerializedName("vote_count")
     private int voteCount;
@@ -129,7 +129,7 @@ public class Movie implements Parcelable {
         originalLanguage = in.readString();
         originalTitle = in.readString();
         overview = in.readString();
-        popularity = in.readDouble();
+        popularity = in.readFloat();
         posterPath = in.readString();
         productionCompanies = in.createTypedArrayList(ProductionCompany.CREATOR);
         productionCountries = in.createTypedArrayList(ProductionCountry.CREATOR);
@@ -141,7 +141,7 @@ public class Movie implements Parcelable {
         tagline = in.readString();
         title = in.readString();
         video = in.readByte() != 0;
-        voteAverege = in.readDouble();
+        voteAverege = in.readFloat();
         voteCount = in.readInt();
     }
 
@@ -197,7 +197,7 @@ public class Movie implements Parcelable {
         return overview;
     }
 
-    public double getPopularity() {
+    public float getPopularity() {
         return popularity;
     }
 
@@ -245,7 +245,7 @@ public class Movie implements Parcelable {
         return video;
     }
 
-    public double getVoteAverege() {
+    public float getVoteAverege() {
         return voteAverege;
     }
 
