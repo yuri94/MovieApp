@@ -24,6 +24,7 @@ public class MovieApiClient {
 
     private MutableLiveData<List<Movie>> mMovies;
     private MutableLiveData<Movie> mMovie;
+    private MutableLiveData<Integer> totalPage;
 
     private static MovieApiClient instance;
 
@@ -39,6 +40,7 @@ public class MovieApiClient {
     private MovieApiClient() {
         mMovies = new MutableLiveData<>();
         mMovie = new MutableLiveData<>();
+        totalPage = new MutableLiveData<>();
     }
 
 
@@ -48,6 +50,10 @@ public class MovieApiClient {
 
     public LiveData<Movie> getMovie() {
         return mMovie;
+    }
+
+    public MutableLiveData<Integer> getTotalPage() {
+        return totalPage;
     }
 
     public void searchMovieApi(String query, int pageNumber) {
@@ -146,7 +152,11 @@ public class MovieApiClient {
         }
 
         private void fetchMovieSearchResponse(Response response) {
-            List<Movie> list = new ArrayList<>(((SearchMovie) response.body()).getResults());
+            SearchMovie searchMovie = (SearchMovie) response.body();
+            List<Movie> list = new ArrayList<>(searchMovie.getResults());
+            if (pageNumber == 24)
+                System.out.println("a");
+
             if (pageNumber == 1) {
                 mMovies.postValue(list);
             } else {
@@ -154,6 +164,7 @@ public class MovieApiClient {
                 currentMovies.addAll(list);
                 mMovies.postValue(currentMovies);
             }
+            totalPage.postValue(searchMovie.getTotalPages());
         }
 
         private void fetchMovieResponse(Response response) {

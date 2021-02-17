@@ -89,12 +89,9 @@ public class MainActivity extends AppCompatActivity implements OnMovieLiestener 
             @Override
             public void onChanged(List<Movie> movies) {
                 if (movies != null) {
-                    for (Movie movie : movies) {
-                        Log.v("Tag", "onChanged: " + movie.getTitle());
-
-                        movieRecyclerAdapter.setmMovies(movies);
-                        movieRecyclerAdapter.notifyDataSetChanged();
-                    }
+                    Log.v("Tag", "onChanged: ");
+                    movieRecyclerAdapter.setmMovies(movies);
+                    movieRecyclerAdapter.notifyDataSetChanged();
                 }
             }
         });

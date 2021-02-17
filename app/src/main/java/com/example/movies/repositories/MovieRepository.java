@@ -30,6 +30,10 @@ public class MovieRepository {
         return movieApiClient.getMovies();
     }
 
+    public LiveData<Integer> getTotalPage() {
+        return movieApiClient.getTotalPage();
+    }
+
     public LiveData<Movie> getMovie() {
         return movieApiClient.getMovie();
     }
